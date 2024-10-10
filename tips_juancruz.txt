@@ -1,0 +1,29 @@
+-------
+Los case son los estados, dentro de ellos tenemos que hacer el código de cada transición
+Cada case tiene numero de if's = a flechas. 
+
+
+-----------------------------
+
+Tips:
+
+> N estados de nuestra maquina y M eventos 
+--> Archivo sensor--: usa como variable de control una estructura de tipo data .state (es la variable adentro de esa estructura)
+	voy a tener N case (con sus brake) que van a representar los N eventos.
+	Dentro de cada case:
+		Tener tantos If's como EVENTOS. Comparo el evento con lo que se lea. Si es estado tiene tres flechas/transiciones, tengo 3 ifs que debo comparar esas condiciones.
+			
+			Cosas que puedo hacer en los if's (proposiciones):
+				>Put_event_task_syst(.event) : adentro le paso el campo del evento de la estructura --> esto lo carga en una  pila.
+				>Puedo cambiar el estado futuro en el estado : p_task_sensor_dta->event =	EV_BTN_XX_UP; 
+				> impactar sobre el tick (inicializarlo o decrementarlo) --> luego una condicion de un if puede depender de este tick.
+
+		** Para ser prolijos y debugear mas facil. Seguir este orden:
+			Hacer todos los case / estados.
+			Poner todos los ifs (segun num de flechas) de cada caso con su transición.
+			Ver que corra todo sin problemas
+			Empiezo a poner las acciones dentro de los ifs.
+			
+		Primero hacer para un pulsador y considerando los rebotes. Deberia ser facil pasar de la tabla/excel al codigo. Luego el resto de botones debe ser parecido.
+
+		Para cargar un nuevo boton, acordarse que se declaran en una lista (linea 70 task_sensor.c del struct task_sensor_data)
