@@ -71,8 +71,11 @@ const task_sensor_cfg_t task_sensor_cfg_list[] = {
 #define SENSOR_CFG_QTY	(sizeof(task_sensor_cfg_list)/sizeof(task_sensor_cfg_t))
 
 task_sensor_dta_t task_sensor_dta_list[] = {
-	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP}
-}; //lista de los estados de los botones y su tiempo minimo para considerar el cambio creo.
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},
+	{DEL_BTN_XX_MIN, ST_BTN_XX_DOWN, EV_BTN_XX_DOWN},
+	{DEL_BTN_XX_MIN, ST_BTN_XX_FALLING, EV_BTN_XX_DOWN},
+	{DEL_BTN_XX_MIN, ST_BTN_XX_RISING, EV_BTN_XX_UP},
+}; //Declaro todos los estados con el mismo tick, despues vemos que queda
 
 #define SENSOR_DTA_QTY	(sizeof(task_sensor_dta_list)/sizeof(task_sensor_dta_t))
 
@@ -179,7 +182,7 @@ void task_sensor_update(void *parameters)
 			los case son los estados: (aca supongo son los diferentes botones que tenemos en nuetro sistema global, para manejar dependencias supongo se hace con las guardas osea ifs)
 			¿Hay que hacer para cada boton? o existe manera de hacer una forma con punteros? -->rta rapida, parece q si.
 			*/
-				case ST_BTN_XX_UP: //(este seria el del sensor del auto si el boton esta en estadoa arriba)
+				case ST_BTN_XX_UP: // son los casos genericos de boton, despues tendriamos que ver como diferenciamos el caso del boto auto presente
 
 					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event) //se presiona para bajar (evento)
 					{
