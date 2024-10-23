@@ -1,0 +1,9 @@
+ 
+ Para agregar un botón nuevo {
+ 	 ioc: agregar el pin como input o output y meterle Pull_up ¡CAMBIARLE EL LABEL!
+	 revisar main .c y.h 
+	 cambiar: 	board.h : Agregar los define para el botón nuevo
+ 				task_sensor_atribute.h : Sumar el ID del boton nuevo
+ 				task_sensor.c : Agrandar las estructuras data y cfg para los nuevos botones
+ 				system_atribute.h Agregar los eventos que se relacionan con el nuevo botón y el sistema 	
+ }		

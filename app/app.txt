@@ -1,0 +1,2 @@
+ app_init(): Llama a cada funcion de inicializacion
+ app_update(): hace un update y guarda los tiempos que tarda cada update
