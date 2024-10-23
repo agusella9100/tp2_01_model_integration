@@ -92,7 +92,13 @@ typedef enum task_sensor_st {ST_BTN_XX_UP,
 						     ST_BTN_XX_RISING} task_sensor_st_t;
 
 /* Identifier of Task Sensor */
-typedef enum task_sensor_id {ID_BTN_A} task_sensor_id_t;
+typedef enum task_sensor_id {ID_BTN_A,
+							ID_BTN_AUTO,
+							ID_BTN_BOTON,
+							ID_BTN_TICKET,
+							ID_BTN_BARRERA_ARRIBA,
+							ID_BTN_AUTO_PASANDO,
+							ID_BTN_BARRERO_ABAJO} task_sensor_id_t;
 
 typedef struct
 {
@@ -110,6 +116,7 @@ typedef struct
 	uint32_t			tick;
 	task_sensor_st_t	state;
 	task_sensor_ev_t	event;
+	bool 				primera_pasada;
 } task_sensor_dta_t;
 
 /********************** external data declaration ****************************/

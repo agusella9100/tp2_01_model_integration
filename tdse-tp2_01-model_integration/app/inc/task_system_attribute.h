@@ -63,7 +63,21 @@ extern "C" {
 
 /* Events to excite Task System */
 typedef enum task_system_ev {EV_SYS_XX_IDLE,
-							 EV_SYS_XX_ACTIVE} task_system_ev_t;
+							 EV_SYS_XX_ACTIVE,
+							 EV_SYS_AUTO_PRESENTE,
+							 EV_SYS_AUTO_NOPRESENTE,
+							 EV_SYS_BOTON_PULSADO,
+							 EV_SYS_BOTON_NOPULSADO,
+							 EV_SYS_TICKET_RETIRADO,
+							 EV_SYS_TICKET_NORETIRADO,
+							 EV_SYS_BARRERA_ARRIBA,
+							 EV_SYS_BARRERA_NOARRIBA,
+							 EV_SYS_AUTO_PASANDO,
+							 EV_SYS_AUTO_NOPASANDO,
+							 EV_SYS_BARRERA_ABAJO,
+							 EV_SYS_BARRERA_NOABAJO
+} task_system_ev_t;
+
 
 /* State of Task System */
 typedef enum task_system_st {ST_SYS_XX_IDLE,

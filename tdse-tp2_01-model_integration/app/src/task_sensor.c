@@ -62,20 +62,45 @@
 /********************** internal data declaration ****************************/
 const task_sensor_cfg_t task_sensor_cfg_list[] = {
 	{ID_BTN_A,  BTN_A_PORT,  BTN_A_PIN,  BTN_A_PRESSED, DEL_BTN_XX_MAX,
-	 EV_SYS_XX_IDLE,  EV_SYS_XX_ACTIVE}
+	 EV_SYS_XX_IDLE,  EV_SYS_XX_ACTIVE},
 
-	//{{ID_BUTTON_S1, BUTTON_S1_PORT, BUTTON_S1_PIN, BUTTON_PRESSED,
-	//  BUTTON_XX_DEL_MAX, EV_SYSTEM_AUTO_POSICION_OFF, EV_SYSTEM_AUTO_POSICION_ON}, {}, {}};
+	{ID_BTN_AUTO,  BTN_AUTO_PORT,  BTN_AUTO_PIN,  BTN_AUTO_PRESSED, DEL_BTN_XX_MAX,
+		 EV_SYS_AUTO_PRESENTE,  EV_SYS_AUTO_NOPRESENTE},
+
+	{ID_BTN_BOTON,  BTN_BOTON_PORT,  BTN_BOTON_PIN,  BTN_BOTON_PRESSED, DEL_BTN_XX_MAX,
+		 		 EV_SYS_BOTON_PULSADO,  EV_SYS_BOTON_NOPULSADO},
+
+	{ID_BTN_TICKET,  BTN_TICKET_PORT,  BTN_TICKET_PIN,  BTN_TICKET_PRESSED, DEL_BTN_XX_MAX,
+				 EV_SYS_TICKET_RETIRADO,  EV_SYS_TICKET_NORETIRADO},
+
+	{ID_BTN_BARRERA_ARRIBA,  BTN_BARRERA_ARRIBA_PORT,  BTN_BARRERA_ARRIBA_PIN,  BTN_BARRERA_ARRIBA_PRESSED,
+			DEL_BTN_XX_MAX,	 EV_SYS_BARRERA_ARRIBA,  EV_SYS_BARRERA_NOARRIBA},
+
+	{ID_BTN_AUTO_PASANDO,  BTN_AUTO_PASANDO_PORT,  BTN_AUTO_PASANDO_PIN,  BTN_AUTO_PASANDO_PRESSED,
+			DEL_BTN_XX_MAX,	 EV_SYS_AUTO_PASANDO,  EV_SYS_AUTO_NOPASANDO},
+
+	{ID_BTN_BARRERA_ABAJO,  BTN_BARRERA_ABAJO_PORT,  BTN_BARRERA_ABAJO_PIN,  BTN_BARRERA_ABAJO_PRESSED,
+						DEL_BTN_XX_MAX,	 EV_SYS_BARRERA_ABAJO,  EV_SYS_BARRERA_NOABAJO}
+
 };
 
 #define SENSOR_CFG_QTY	(sizeof(task_sensor_cfg_list)/sizeof(task_sensor_cfg_t))
 
 task_sensor_dta_t task_sensor_dta_list[] = {
-	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP},
-	{DEL_BTN_XX_MIN, ST_BTN_XX_DOWN, EV_BTN_XX_DOWN},
-	{DEL_BTN_XX_MIN, ST_BTN_XX_FALLING, EV_BTN_XX_DOWN},
-	{DEL_BTN_XX_MIN, ST_BTN_XX_RISING, EV_BTN_XX_UP},
-}; //Declaro todos los estados con el mismo tick, despues vemos que queda
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false},
+
+	{DEL_BTN_XX_MIN, ST_BTN_XX_UP, EV_BTN_XX_UP, false}
+};
 
 #define SENSOR_DTA_QTY	(sizeof(task_sensor_dta_list)/sizeof(task_sensor_dta_t))
 
@@ -123,6 +148,7 @@ void task_sensor_init(void *parameters)
 	g_task_sensor_tick_cnt = G_TASK_SEN_TICK_CNT_INI;
 }
 
+
 void task_sensor_update(void *parameters)
 {
 	uint32_t index;
@@ -161,11 +187,11 @@ void task_sensor_update(void *parameters)
 		{
     		/* Update Task Sensor Configuration & Data Pointer */
 			p_task_sensor_cfg = &task_sensor_cfg_list[index];
-			p_task_sensor_dta = &task_sensor_dta_list[index]; //aca entra lo de la linea 70, por lo que ya el siguiente codigo es para todos los pines pq le paso la direcc de memoria
+			p_task_sensor_dta = &task_sensor_dta_list[index];
 
-			if (p_task_sensor_cfg->pressed == HAL_GPIO_ReadPin(p_task_sensor_cfg->gpio_port, p_task_sensor_cfg->pin)) //de parametros son (puntero al periferico , bit del puerto a leer) --> devuelve el status del
+			if (p_task_sensor_cfg->pressed == HAL_GPIO_ReadPin(p_task_sensor_cfg->gpio_port, p_task_sensor_cfg->pin))
 			{
-				p_task_sensor_dta->event =	EV_BTN_XX_DOWN; //aca aparecen los eventos posibles que se leen en el pin
+				p_task_sensor_dta->event =	EV_BTN_XX_DOWN;
 			}
 			else
 			{
@@ -174,86 +200,70 @@ void task_sensor_update(void *parameters)
 
 			switch (p_task_sensor_dta->state)
 			{
+				case ST_BTN_XX_UP:
 
-			/*hago uno caso a modo de ejemplo de como lo entendi. Tambien hay que ver de agregar el boton linea 70
-			Sigo el siguiente orden: 1) pongo todos los case/estados con sus break (st_up st_raising st_falling st_down)
-									2)pongo todos los ifs segun flechas salgan del estado (falling 4 - raising 3 -up y down 1 flecha)
-									3)comento las acciones dentro de los ifs pq no puedo debugear y ver que corra sin problemas.
-			los case son los estados: (aca supongo son los diferentes botones que tenemos en nuetro sistema global, para manejar dependencias supongo se hace con las guardas osea ifs)
-			¿Hay que hacer para cada boton? o existe manera de hacer una forma con punteros? -->rta rapida, parece q si.
-			*/
-				case ST_BTN_XX_UP: // son los casos genericos de boton, despues tendriamos que ver como diferenciamos el caso del boto auto presente
-
-					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event) //se presiona para bajar (evento)
+					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event)
 					{
-						put_event_task_system(p_task_sensor_cfg->signal_down); //Esto en realidad setea un task_sensor_ev_t en la configuracion, la cual no compendi bien pero parece indicar el evento ocasionado.
-						p_task_sensor_dta->state = ST_BTN_XX_FALLING; // cambio el estado del boton, Aca puse que pasa a falling pq es como implementamos nosotros los botones
-						p_task_sensor_dta->tick = DEL_BTN_XX_MED; //esto nose bien pero esta definido como 25 unsigned long. lo quie quiero hacer es setear el tick en ese valor para empezar a contar
+						//put_event_task_system(p_task_sensor_cfg->signal_down);
+						p_task_sensor_dta->state = ST_BTN_XX_FALLING;
+						p_task_sensor_dta->tick = DEL_BTN_XX_MAX;
 					}
-
 					break;
 
 				case ST_BTN_XX_FALLING:
 
-
-					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick > 0)
-					{
-						p_task_sensor_dta->tick--;
-
-					}
-
-					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
-					{
-						put_event_task_system(p_task_sensor_cfg->signal_down);
-						p_task_sensor_dta->state = ST_BTN_XX_DOWN;
-						p_task_sensor_dta->event = EV_SYS_XX_ACTIVE; //es como el raise
-					}
-
-					if (EV_BTN_XX_DOWN == p_task_sensor_dta->event && p_task_sensor_dta->tick <= DEL_BTN_XX_MAX )
-					{
-						put_event_task_system(p_task_sensor_cfg->signal_up);
+					if(EV_BTN_XX_UP == p_task_sensor_dta->event){
 						p_task_sensor_dta->state = ST_BTN_XX_UP;
 					}
 
+					if(EV_BTN_XX_DOWN == p_task_sensor_dta->event)
+					{
+						if(p_task_sensor_dta->tick > 0){
+							p_task_sensor_dta->tick--;
+						}
+						else{
+							p_task_sensor_dta->state = ST_BTN_XX_DOWN;
+							if(p_task_sensor_dta->primera_pasada == false){
+								p_task_sensor_dta->primera_pasada = true;
+								put_event_task_system(p_task_sensor_cfg->signal_up);
+							}
+							else{
+								p_task_sensor_dta->primera_pasada = false;
+								put_event_task_system(p_task_sensor_cfg->signal_down);
+							}
+						}
+					}
 					break;
 
 				case ST_BTN_XX_DOWN:
 
-					if (EV_BTN_XX_UP == p_task_sensor_dta->event) //lee el "miembro/elemento" evento de la estructura del sensor_dta y si es q el boton esta en up hace esto (seria soltar el boton o volverlo a presionar? como lo implementamos nosotros?)
+					if (EV_BTN_XX_UP == p_task_sensor_dta->event)
 					{
-						put_event_task_system(p_task_sensor_cfg->signal_up);
+						//put_event_task_system(p_task_sensor_cfg->signal_up);
 						p_task_sensor_dta->state = ST_BTN_XX_RISING;
+						p_task_sensor_dta->tick = DEL_BTN_XX_MAX;
 					}
 
 					break;
 
 				case ST_BTN_XX_RISING:
 
-					if (EV_BTN_XX_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick == 0)
-					{
-						put_event_task_system(p_task_sensor_cfg->signal_up);
-						p_task_sensor_dta->state = ST_BTN_XX_UP;
+					if(EV_BTN_XX_DOWN == p_task_sensor_dta->event){
+						p_task_sensor_dta->state = ST_BTN_XX_DOWN;
 					}
-
-					if (EV_BTN_XX_UP == p_task_sensor_dta->event && p_task_sensor_dta->tick < DEL_BTN_XX_MAX)
-					{
-						p_task_sensor_dta->tick --;
+					if(EV_BTN_XX_UP == p_task_sensor_dta->event){
+						if(p_task_sensor_dta->tick >0){
+							p_task_sensor_dta->tick--;
+						}
+						else{
+							p_task_sensor_dta->state = ST_BTN_XX_UP;
+						}
 					}
-					else
-					{
-					    //EV_BTN_XX_DOWN == p_task_sensor_dta->event
-						put_event_task_system(p_task_sensor_cfg->signal_down);
-					}
-
 					break;
 
 				default:
 
 					break;
-
-					//aca con lo q escribi es una idea rapida de como entendi q se hacia. Hace falta ver bien la estructura de los botones/pines
-					// tambien ver de definir los diferentes botones con su contador entre llaves como esta en la linea 70
-					//preguntarse pq el chabon no puso en esa linea los estados de raising y falling
 			}
 		}
     }
