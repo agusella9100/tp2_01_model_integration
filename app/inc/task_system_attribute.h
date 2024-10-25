@@ -66,8 +66,8 @@ typedef enum task_system_ev {EV_SYS_XX_IDLE,
 							 EV_SYS_XX_ACTIVE,
 							 EV_SYS_AUTO_PRESENTE,
 							 EV_SYS_AUTO_NOPRESENTE,
-							 EV_SYS_BOTON_PULSADO,
-							 EV_SYS_BOTON_NOPULSADO,
+							 EV_SYS_BOTON_TICKET_PULSADO,
+							 EV_SYS_BOTON_TICKET_NOPULSADO,
 							 EV_SYS_TICKET_RETIRADO,
 							 EV_SYS_TICKET_NORETIRADO,
 							 EV_SYS_BARRERA_ARRIBA,
@@ -80,7 +80,14 @@ typedef enum task_system_ev {EV_SYS_XX_IDLE,
 
 /* State of Task System */
 typedef enum task_system_st {ST_SYS_XX_IDLE,
-							 ST_SYS_XX_ACTIVE} task_system_st_t;
+							 ST_SYS_XX_ACTIVE,
+							 ST_SYS_XX_AUTO_NOPRESENTE,
+							 ST_SYS_XX_AUTO_PRESENTE,
+							 ST_SYS_XX_BOTON_TICKET_PULSADO,
+							 ST_SYS_XX_TICKET_RETIRADO,
+							 ST_SYS_XX_BARRERA_ARRIBA,
+							 ST_SYS_XX_AUTO_PASANDO,
+							 ST_SYS_XX_BARRERA_ABAJO} task_system_st_t;
 
 typedef struct
 {

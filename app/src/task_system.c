@@ -154,7 +154,7 @@ void task_system_update(void *parameters)
 
 		switch (p_task_system_dta->state)
 		{
-			case ST_SYS_XX_IDLE:
+			/*case ST_SYS_XX_IDLE:
 
 				if ((true == p_task_system_dta->flag) && (EV_SYS_XX_ACTIVE == p_task_system_dta->event))
 				{
@@ -174,8 +174,102 @@ void task_system_update(void *parameters)
 					p_task_system_dta->state = ST_SYS_XX_IDLE;
 				}
 
-				break;
+				break; */
 
+			case ST_SYS_XX_AUTO_NOPRESENTE:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_PRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state = ST_SYS_XX_AUTO_PRESENTE;
+						}
+
+						break;
+			case ST_SYS_XX_AUTO_PRESENTE:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_BOTON_TICKET_PULSADO == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state = ST_SYS_XX_BOTON_TICKET_PULSADO;
+						}
+						else if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_NOPRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state = ST_SYS_XX_AUTO_NOPRESENTE;
+						}
+						break;
+
+			case ST_SYS_XX_BOTON_TICKET_PULSADO:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_TICKET_RETIRADO == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_TICKET_RETIRADO;
+						}
+						else if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_NOPRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state = ST_SYS_XX_AUTO_NOPRESENTE;
+						}
+						break;
+
+			case ST_SYS_XX_TICKET_RETIRADO:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_BARRERA_ARRIBA == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_BARRERA_ARRIBA;
+						}
+						// Es necesario seguir teniendo la guarda de AUTO_NO_PRESENTE?
+						else if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_NOPRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state = ST_SYS_XX_AUTO_NOPRESENTE;
+						}
+						break;
+
+			case ST_SYS_XX_BARRERA_ARRIBA:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_PASANDO == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_AUTO_PASANDO;
+						}
+						break;
+
+			case ST_SYS_XX_AUTO_PASANDO:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_BARRERA_ABAJO == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_BARRERA_ABAJO;
+						}
+						break;
+			case ST_SYS_XX_BARRERA_ABAJO:
+
+						if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_NOPRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_AUTO_NOPRESENTE;
+						}
+
+						else if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_PRESENTE == p_task_system_dta->event))
+						{
+							p_task_system_dta->flag = false;
+							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
+							p_task_system_dta->state =  ST_SYS_XX_AUTO_PRESENTE;
+						}
+						break;
 			default:
 
 				break;
