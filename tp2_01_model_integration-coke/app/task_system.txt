@@ -1,0 +1,21 @@
+  task_system.c (task_system.h, task_system_attribute.h) 
+   Non-Blocking Code -> System Modeling
+  
+  task_system_interface.c (task_system_interface.h)
+   Non-Blocking Code
+
+...
+
+Estructura task_system_dta_t me da los ticks, el estado, el evento y el flag en la que está el sistema.
+
+FUNCIÓN
+•task_system_init()
+Inicializa init_queue_event_task_system() la queue, con cabeza y cola en CERO y todos los eventos indefinidos 
+Imprime en consola el estado, evento y flag del sistema
+Inicializa los contadores con las variables globales
+•task_system_update()
+Entra en el primer bloque IF cuando la cabeza es distinta de la cola	
+	Levanta el flag a TRUE de levantar evento
+	get_event_task_system() me resta el contador de queue, toma el ÚLTIMO evento (cola) y lo devuelve. Chequea la máxima cantidad.
+Entra al switch de los estados del statechart
+	

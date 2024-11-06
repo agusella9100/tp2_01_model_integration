@@ -1,0 +1,42 @@
+  task_sensor.c (task_sensor.h, task_sensor_attribute.h) 
+   Non-Blocking & Update By Time Code -> Sensor Modeling
+  
+...
+
+La estructura task_sensor_cfg_t se define en el task_sensor_attribute.h 
+	task_sensor_id_t	identifier;
+	GPIO_TypeDef *		gpio_port;
+	uint16_t			pin;
+	GPIO_PinState		pressed;
+	uint32_t			tick_max;
+	task_sensor_ev_t	signal_up;
+	task_sensor_ev_t	signal_down;
+después se define una lista de esta estructura, guardo todos los sensores
+
+
+CONSTANTES
+•G_TASK_SEN_CNT_INI			Nro inicialización para conteo de sensor		
+•G_TASK_SEN_TICK_CNT_INI	Nro incialiazación para conteo de tick
+•g_task_sensor_cnt				
+•g_task_sensor_tick_cnt
+
+
+FUNCIONES 
+•task_sensor_init()
+Levanta el puntero de la tarea con un for e imprime estado y evento del sensor 
+Inicializa las constantes con las globales
+•task_sensor_update()
+Incrementa el conteo de g_task_sensor_cnt.
+Pone b_time_update_required en TRUE mientras g_task_sensor_tick_cnt sea mayor a la global
+	Recorre la lista task_sensor_cfg_list: primero define el estado del sensor
+		IF task_sensor_cfg -> task_sensor_dta event = EV_BTN_XX_DOWN
+		ELSE    task_sensor_dta event = EV_BTN_XX_UP
+		
+		Recorre el switch viendo los 4 estados del botón que definimos, cambiando el estado de task_sensor_dta y la señal del task_sensor_ev_t
+		
+
+INPUT GPIO (Sensores)
+-GPIO_PIN_10 (AUTO_PRESENTE)|GPIO_PIN_4 (TICKET_RETIRADO)|GPIO_PIN_5 (BARRERA_ALTA) para el PORT GPIOB
+-GPIO_PIN_7 (AUTO_PASANDO) para el PORT GPIOC
+-GPIO_PIN_10 (BARRERA_ABAJO)|GPIO_PIN_15 (BOTON_TICKET) para el port GPIOA		
+		

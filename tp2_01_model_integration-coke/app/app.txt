@@ -1,2 +1,47 @@
- app_init(): Llama a cada funcion de inicializacion
- app_update(): hace un update y guarda los tiempos que tarda cada update
+  app.c (app.h)
+   Endless loops, which execute tasks with fixed computing time. This 
+   sequential execution is only deviated from when an interrupt event occurs.
+
+...
+
+
+Estructura de task_cfg_t define los punteros a las acciones de la tarea: a su inicialización, su actualización y parámetros. 
+Estructura de task_dta_t define el peor escenario de ejecucción de la tarea. Guarda ese dato.
+
+Lista de task_cfg_t recorre los tres bloques del SE: inicializa sensores y actualiza, inicializa sistema y actualiza, inicializa actuadores y actualiza.
+
+TASK_QTY es el número de tareas a reliazar. 
+
+CONSTANTES
+•G_APP_CNT_INI			Nro inicialización para conteo de app		
+•G_APP_TICK_CNT_INI		Nro incialiazación para conteo de tick
+•TASK_X_WCET_INI		Nro inicialización para WorstScenario
+•TASK_X_DELAY_MIN		Nro inicialización para Delay 
+•g_app_cnt				Conteo ejecución de App			
+•g_app_time_us			Tiempo de ejecución de App
+•g_app_tick_cnt			Conteo ticks de App
+
+FUNCIONES
+•app_init()
+Recorre la lista de task_cfg y task_dta para inicializar todas las tareas. 
+Imprime el nombre de la aplicación ejecutándose y el tick en [ms] que corre.
+Inicializa g_app_cnt con la global G_APP_CNT_INI
+Ejecuta "cycle_counter_init()" del bloque DWT (Data Watchpoint and Trace) = inicializa el contador de ciclos de reloj.
+•app_update()
+Compara g_app_tick_cnt (uint32bits) con la global G_APP_TICK_CNT_INI para entrar a la actualización.
+	Decrementa g_app_tick_cnt
+	Incremente g_app_cnt
+	Setea g_app_time_us = 0
+	Recorre la lista de tareas, en cada una
+		Resetea el contador de ciclos (cycle_counter_reset)
+		Actualiza la tarea en la lista por el índice 
+		Obtiene el registro CYCCNT del conteo de ciclos, y su valor en segundos
+		Suma el tiempo de ejecución a g_app_time_us 
+		Guarda valor de tiempo como WCET si si fue mayor al seteado
+•HAL_SYSTICK_Callback()
+Incrementa en uno el contador de cada bloque del SE			 
+
+
+
+
+

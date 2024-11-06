@@ -1,0 +1,13 @@
+  task_actuator.c (task_actuator.h, task_actuator_attribute.h) 
+   Non-Blocking & Update By Time Code -> Actuator Modeling
+
+  task_actuator_interface.c (task_actuator_interface.h)
+   Non-Blocking Code
+
+...
+
+LD2_Pin|GPIO_PIN_8|GPIO_PIN_9 para el puerto GPIOA
+GPIO_PIN_3|GPIO_PIN_6 para el puerto GPIOB
+
+task_actuador_init()
+	Me pone todos los pins en OFF 
