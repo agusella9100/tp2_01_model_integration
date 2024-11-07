@@ -59,10 +59,10 @@ extern "C" {
 /* STM32 Nucleo Boards - 64 Pins */
 #if ((BOARD == NUCLEO_F103RC) || (BOARD == NUCLEO_F401RE) || (BOARD == NUCLEO_F446RE))
 
-#define BTN_A_PIN		B1_Pin
+/*#define BTN_A_PIN		B1_Pin
 #define BTN_A_PORT		B1_GPIO_Port
 #define BTN_A_PRESSED	GPIO_PIN_RESET
-#define BTN_A_HOVER		GPIO_PIN_SET
+#define BTN_A_HOVER		GPIO_PIN_SET*/
 
 #define BTN_AUTO_PIN	D2_Pin
 #define BTN_AUTO_PORT	D2_GPIO_Port
@@ -84,26 +84,43 @@ extern "C" {
 #define BTN_BARRERA_ARRIBA_PRESSED	GPIO_PIN_RESET
 #define BTN_BARRERA_ARRIBA_HOVER	GPIO_PIN_SET
 
-#define BTN_AUTO_PASANDO_PIN	D6_Pin
-#define BTN_AUTO_PASANDO_PORT	D6_GPIO_Port
+#define BTN_AUTO_PASANDO_PIN	D9_Pin
+#define BTN_AUTO_PASANDO_PORT	D9_GPIO_Port
 #define BTN_AUTO_PASANDO_PRESSED	GPIO_PIN_RESET
 #define BTN_AUTO_PASANDO_HOVER	GPIO_PIN_SET
 
 #define BTN_BARRERA_ABAJO_PIN	D11_Pin
 #define BTN_BARRERA_ABAJO_PORT	D11_GPIO_Port
 #define BTN_BARRERA_ABAJO_PRESSED	GPIO_PIN_RESET
-#define BTN_BARRERA_ABAJO_HOVER	    GPIO_PIN_SET
+#define BTN_BARRERA_ABAJO_HOVER	    GPIO_PIN_SETññ{
 
-#define LED_A_PIN		LD2_Pin
-#define LED_A_PORT		LD2_GPIO_Port
+#define LED_LD2_PIN		LD2_Pin
+#define LED_LD2_PORT		LD2_GPIO_Port
+#define LED_LD2_ON		GPIO_PIN_SET
+#define LED_LD2_OFF		GPIO_PIN_RESET
+
+
+#define LED_A_PIN		D3_Pin
+#define LED_A_PORT		D3_GPIO_Port
 #define LED_A_ON		GPIO_PIN_SET
 #define LED_A_OFF		GPIO_PIN_RESET
 
-
-#define LED_B_PIN		D4_Pin
-#define LED_B_PORT		D4_GPIO_Port  //esta bien esto?
+#define LED_B_PIN		D7_Pin
+#define LED_B_PORT		D7_GPIO_Port
 #define LED_B_ON		GPIO_PIN_SET
 #define LED_B_OFF		GPIO_PIN_RESET
+
+
+#define LED_C_PIN		D10_Pin
+#define LED_C_PORT		D10_GPIO_Port
+#define LED_C_ON		GPIO_PIN_SET
+#define LED_C_OFF		GPIO_PIN_RESET
+
+#define LED_D_PIN		D8_Pin
+#define LED_D_PORT		D8_GPIO_Port
+#define LED_D_ON		GPIO_PIN_SET
+#define LED_D_OFF		GPIO_PIN_RESET
+
 
 #endif/* STM32 Nucleo Boards - 144 Pins */
 

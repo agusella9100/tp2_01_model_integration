@@ -240,7 +240,7 @@ void task_system_update(void *parameters)
 						if ((true == p_task_system_dta->flag) && (EV_SYS_AUTO_PASANDO == p_task_system_dta->event))
 						{
 							p_task_system_dta->flag = false;
-							put_event_task_actuator(EV_LED_XX_BLINK, ID_LED_D);
+							put_event_task_actuator(EV_LED_XX_BLINK, ID_LED_D); //ver
 							p_task_system_dta->state =  ST_SYS_XX_AUTO_PASANDO;
 						}
 						break;
@@ -251,7 +251,7 @@ void task_system_update(void *parameters)
 						{
 							p_task_system_dta->flag = false;
 							put_event_task_actuator(EV_LED_XX_ON, ID_LED_A);
-							put_event_task_actuator(EV_LED_XX_NOT_BLINK, ID_LED_D);
+							put_event_task_actuator(EV_LED_XX_OFF, ID_LED_D);  /// ver
 							put_event_task_actuator(EV_LED_XX_OFF, ID_LED_C);
 							p_task_system_dta->state =  ST_SYS_XX_BARRERA_ABAJO;
 						}
